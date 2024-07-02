@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://user:password@postgres:5432/moviedb?schema=public
+      - JWT_SECRET=your_jwt_secret
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: moviedb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432" # Mapeando a porta 5433 do host para a porta 5432 do contêiner
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
